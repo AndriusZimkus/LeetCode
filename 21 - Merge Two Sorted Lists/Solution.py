@@ -1,3 +1,4 @@
+from ListNode import ListNode
 class Solution(object):
     def mergeTwoLists(self, list1, list2):
         """
@@ -5,32 +6,35 @@ class Solution(object):
         :type list2: Optional[ListNode]
         :rtype: Optional[ListNode]
         """
-        newList = []
-
-        i1 = 0
-        i2 = 0
-        while i1 < len(list1) or i2 < len(list2):
-
-            if i1 >= len(list1):
-                currentElement = list2[i2]
-                i2 += 1
-                newList.append(currentElement)
-                continue
-            
-            if i2 >= len(list2):
-                currentElement = list1[i1]
-                i1 += 1
-                newList.append(currentElement)
-                continue
-
-            if list1[i1] < list2[i2]:
-                currentElement = list1[i1]
-                i1 += 1
-            else:
-                currentElement = list2[i2]
-                i2 += 1
-            
-            newList.append(currentElement)
-            
-        return newList
         
+        firstNode = None
+        nextNode1 = list1
+        nextNode2 = list2
+        
+        while nextNode1 is not None or nextNode2 is not None:
+
+            if nextNode1 is None:
+                nextNode = nextNode2
+                nextNode2 = nextNode2.next
+
+            elif nextNode2 is None:
+                nextNode = nextNode1
+                nextNode1 = nextNode1.next
+            elif nextNode1.val < nextNode2.val:
+                nextNode = nextNode1
+                nextNode1 = nextNode1.next
+            else:
+                nextNode = nextNode2
+                nextNode2 = nextNode2.next
+
+
+            if nextNode is not None:
+                currentNode = ListNode(nextNode.val)
+                if firstNode is None:
+                    firstNode = currentNode
+                    previousNode = currentNode
+                else:
+                    previousNode.next = currentNode
+                    previousNode = currentNode
+
+        return firstNode
